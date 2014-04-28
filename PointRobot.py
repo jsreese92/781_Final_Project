@@ -69,7 +69,7 @@ class PointRobot:
     condition = True
     while condition:
       i = 0 # (m)
-      print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
+      #print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
       behindObstacle = False 
       while (i < d):
         newX = round(i*cos(radians(tempAngle)),2)
@@ -95,13 +95,18 @@ class PointRobot:
     
       # line where tempAngle == minAngle
       i = 0
+      behindObstacle = False
       while (i < d):
         newX = round(i*cos(radians(minAngle)),2)
         newY = round(i*sin(radians(minAngle)),2)
-        tempTuple = (newX,newY)
-        tempList.append(tempTuple)
+        if (self.clearCircleObstacles(obstacleList,newX,newY)): 
+          tempTuple = (newX,newY)
+          if(behindObstacle):
+            behindObstacleList.append(tempTuple)
+          tempList.append(tempTuple)
+        else:
+          behindObstacle = True #all subsequent points in line put in behindObstacle list  
         i += 0.1
-
 
 #    # angle-first way of doing it
 #    i = 0 # (m)
