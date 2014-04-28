@@ -4,16 +4,30 @@
 
 from PointRobot import PointRobot
 import matplotlib.pyplot as plt
+from CircleObstacle import CircleObstacle 
+
+def initializeObstacles():
+  """ returns list of obstacles"""
+  
+  o0 = CircleObstacle(10,6,6)
+  o1 = CircleObstacle(10,18,4)
+  o2 = CircleObstacle(18,8,4)
+
+  obstacleList = []
+  obstacleList.extend([o0,o1,o2])
+  return obstacleList
 
 def main():
   # assumes degree input in increments of 5
   #                  x,y,V,A,B,rV,D,dw
-  robot = PointRobot(0,0,1,1,1,15,0,1)
+  robot = PointRobot(0,0,1,1,1,30,90,1)
   #print robot.toString()
 
   print "calculating coordinates"
   tupleList = robot.calcCoordinatesReachable()
   print "tuple list: %s" %tupleList
+
+
 
   xList = []
   yList = []
