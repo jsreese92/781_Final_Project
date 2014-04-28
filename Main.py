@@ -20,11 +20,13 @@ def initializeObstacles():
 def main():
   # assumes degree input in increments of 5
   #                  x,y,V,A,B,rV,D,dw
-  robot = PointRobot(0,0,1,1,1,30,90,1)
+  robot = PointRobot(0,0,1,1,1,45,90,1)
   #print robot.toString()
 
+  obstacleList = initializeObstacles()
+
   print "calculating coordinates"
-  tupleList = robot.calcCoordinatesReachable()
+  tupleList = robot.calcCoordinatesReachable(obstacleList)
   print "tuple list: %s" %tupleList
 
 

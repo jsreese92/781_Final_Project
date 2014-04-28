@@ -38,7 +38,7 @@ class PointRobot:
         return False
     return True
           
-  def calcCoordinatesReachable(self):
+  def calcCoordinatesReachable(self, obstacleList):
     """ Returns list of (x,y) tuples at 0.1 m intervals reachable"""
     vi = self.tV # initial velocity
     a = self.tA
@@ -55,13 +55,16 @@ class PointRobot:
     # places points in list that can be reached within dynamic window
     # line-first method of doing it
     tempAngle = maxAngle # (degrees)
-    tempMin = minAngle #(degrees)
+    #minAngle = minAngle #(degrees)
     tempList = []
     iteratorNum = -5 # decrements from max to min angle by 5 degrees
- 
-    while (tempAngle != tempMin):
+    
+    
+    # emulate do-while loop in python
+    condition = True
+    while condition:
       i = 0 #(m)
-      print "out: tempAngle: %s, tempMin %s" %(tempAngle, tempMin)
+      #print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
       while (i < d):
         newX = round(i*cos(radians(tempAngle)),2)
         newY = round(i*sin(radians(tempAngle)),2)   
@@ -69,10 +72,24 @@ class PointRobot:
         tempList.append(tempTuple)
         i += 0.1
       tempAngle += iteratorNum
+      
+      # update do-while
+      condition = (tempAngle != minAngle)
+
       if (tempAngle > 360):
-          tempAngle = tempAngle - 360
+        tempAngle = tempAngle - 360
       elif (tempAngle < 0):
         tempAngle = tempAngle + 360
+    
+      # line where tempAngle == minAngle
+      i = 0
+      while (i < d):
+        newX = round(i*cos(radians(minAngle)),2)
+        newY = round(i*sin(radians(minAngle)),2)
+        tempTuple = (newX,newY)
+        tempList.append(tempTuple)
+        i += 0.1
+
 
 #    # angle-first way of doing it
 #    i = 0 # (m)
@@ -80,19 +97,19 @@ class PointRobot:
 #    while (i < d):
 #      #print "i: %s" %i
 #      tempAngle = maxAngle # (degrees)
-#      tempMin = minAngle # (degrees)
-#      #print "out: tempAngle: %s, tempMin %s" %(tempAngle, tempMin)
+#      minAngle = minAngle # (degrees)
+#      #print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
 #      iteratorNum = 0 # number by which to increment angle
-#      if (tempAngle < tempMin):
+#      if (tempAngle < minAngle):
 #        #print "angles flipped"
 #        #tempAngle = 360 - tempAngle
-#        #tempMin = 360 - tempMin
+#        #minAngle = 360 - minAngle
 #        iteratorNum = -5
 #      else:
 #        iteratorNum = 5
 #        
-#      while (tempAngle != tempMin): 
-#        #print "mid tempangle: %s, tempMin: %s" % (tempAngle, tempMin)
+#      while (tempAngle != minAngle): 
+#        #print "mid tempangle: %s, minAngle: %s" % (tempAngle, minAngle)
 #        #print "cos: %s, sin: %s" % (cos(radians(tempAngle)), sin(radians(tempAngle)))
 #        newX = round(i*cos(radians(tempAngle)),2)
 #        newY = round(i*sin(radians(tempAngle)),2)
