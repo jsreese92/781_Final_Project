@@ -39,37 +39,49 @@ class PointRobot:
     return True
           
   def calcCoordinatesReachable(self, obstacleList):
-    """ Returns list of (x,y) tuples at 0.1 m intervals reachable"""
+    """ Returns tuple of(list of (x,y) tuples at 0.1 m intervals reachable) and 
+        (list of (x,y) tuples that lay behind an obstacle) """
     vi = self.tV # initial velocity
     a = self.tA
     t = self.dw # length of time is just length of dynamic window
     vf = vi + a * t # final velocity
+    r = self.rV # max rotational velocity
 
     # max distance that can be traveled 
     d = ((vi + vf)/2)*t
 
     currentAngle = self.cD
-    maxAngle = (currentAngle + (self.rV*t))%360
-    minAngle = (currentAngle - (self.rV*t))%360
+    if (t*r >= 360): #all angles may be reached
+      maxAngle = 360
+      minAngle = 0
+    else:
+      maxAngle = (currentAngle + (r*t))%360
+      minAngle = (currentAngle - (r*t))%360
 
     # places points in list that can be reached within dynamic window
     # line-first method of doing it
     tempAngle = maxAngle # (degrees)
-    #minAngle = minAngle #(degrees)
     tempList = []
     iteratorNum = -5 # decrements from max to min angle by 5 degrees
     
-    
+    behindObstacleList = []
     # emulate do-while loop in python
     condition = True
     while condition:
-      i = 0 #(m)
-      #print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
+      i = 0 # (m)
+      print "out: tempAngle: %s, minAngle %s" %(tempAngle, minAngle)
+      behindObstacle = False 
       while (i < d):
         newX = round(i*cos(radians(tempAngle)),2)
-        newY = round(i*sin(radians(tempAngle)),2)   
-        tempTuple = (newX,newY)
-        tempList.append(tempTuple)
+        newY = round(i*sin(radians(tempAngle)),2)  
+        # check if points lie within obstacles
+        if (self.clearCircleObstacles(obstacleList,newX,newY)): 
+          tempTuple = (newX,newY)
+          if(behindObstacle):
+            behindObstacleList.append(tempTuple)
+          tempList.append(tempTuple)
+        else:
+          behindObstacle = True #all subsequent points in line put in behindObstacle list
         i += 0.1
       tempAngle += iteratorNum
       
@@ -132,6 +144,6 @@ class PointRobot:
       if tupleList.count(t) > 1:
         tupleList.remove(t)
       
-    return tupleList
+    return (tupleList,behindObstacleList)
 
 

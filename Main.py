@@ -9,27 +9,28 @@ from CircleObstacle import CircleObstacle
 def initializeObstacles():
   """ returns list of obstacles"""
   
-  o0 = CircleObstacle(10,6,6)
-  o1 = CircleObstacle(10,18,4)
-  o2 = CircleObstacle(18,8,4)
+  o0 = CircleObstacle(1,1,1)
+  o1 = CircleObstacle(-1,-1,1)
+  o2 = CircleObstacle(1,-1,1)
+  o3 = CircleObstacle(-1,1,1)
 
   obstacleList = []
-  obstacleList.extend([o0,o1,o2])
+  obstacleList.extend([o0,o1,o2,o3])
   return obstacleList
 
 def main():
   # assumes degree input in increments of 5
   #                  x,y,V,A,B,rV,D,dw
-  robot = PointRobot(0,0,1,1,1,45,90,1)
+  robot = PointRobot(0,0,1,1,1,120,90,3)
   #print robot.toString()
 
   obstacleList = initializeObstacles()
 
   print "calculating coordinates"
-  tupleList = robot.calcCoordinatesReachable(obstacleList)
+  coordinatesTuple = robot.calcCoordinatesReachable(obstacleList)
+  tupleList = coordinatesTuple[0] # list of reachable tuples
+  behindObstacleList = coordinatesTuple[1] # list of tuples behind obstales
   print "tuple list: %s" %tupleList
-
-
 
   xList = []
   yList = []
@@ -40,13 +41,26 @@ def main():
   #print "xList : %s" % xList
   #print "yList: %s" % yList
   
+  oxList = []
+  oyList = []
+  for t in behindObstacleList:
+    oxList.append(t[0])
+    oyList.append(t[1])
+    
   print "plotting coordinates"
   plt.plot(xList,yList,'ro')
+  plt.plot(oxList,oyList,'bo')
   plt.ylabel('y')
   plt.xlabel('x')
-  plt.axis([-1.5, 1.5, -1.5, 1.5])
-
+  plt.title("reachable coordinates")
+  plt.axis([min(xList),max(xList) , min(yList), max(yList)])
   plt.show()
   print "plotting complete"
+  
+
+  
+    
+  print "plotting behind obstacles"
+  plt.plot()
     
 main()
