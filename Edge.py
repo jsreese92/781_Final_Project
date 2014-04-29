@@ -1,6 +1,4 @@
 '''
-Created on Mar 5, 2014
-
 @author: jsreese
 '''
 

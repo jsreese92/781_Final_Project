@@ -12,21 +12,22 @@ import time
 def initializeObstacles():
   """ returns list of obstacles"""
   
-  o0 = CircleObstacle(0,.5,.01)
-  #o1 = CircleObstacle(-1,-1,.5)
-  #o2 = CircleObstacle(1,-1,.5)
-  #o3 = CircleObstacle(-1,1,.5)
+  o0 = CircleObstacle(0,1,.5)
+  o1 = CircleObstacle(-1,-1,.5)
+  o2 = CircleObstacle(1,-1,.5)
+  o3 = CircleObstacle(-1,1,.5)
 
   obstacleList = []
-  obstacleList.extend([o0])#,o1,o2,o3])
+  obstacleList.extend([o0,o1,o2,o3])
   return obstacleList
 
 def main():
   # assumes degree input in increments of 5
   #                  x,y,V,A,B,rV,D,dw
+  
   '''
-  velocities = [1,1.5,2]
-  rotationalVelocities = [180]
+  velocities = [2]
+  rotationalVelocities = [15,30,45,90,180]
   dynamicWindows = [0.5,1,1.5,2]
   for velocity in velocities:
     for rotational in rotationalVelocities:
@@ -129,8 +130,8 @@ def main():
           #y1 = e.vertex1.y
           #plt.plot([x0,x1],[y0,y1],color = 'k')
           
-        
-        
+        '''
+  '''
         print "plotting coordinates"
         direct = plt.plot(xList,yList,'go')
         around = plt.plot(oxList,oyList,'yo')
@@ -149,14 +150,15 @@ def main():
         
         plt.show()
         print "plotting complete"     
-        
+        '''
+  '''
         totalTime = time.time() - startTime
         print "total time: %f" % totalTime
         '''
 
-
   
-  robot = PointRobot(0,0,1,1,1,180,90,1)
+  
+  robot = PointRobot(0,0,1,1,1,45,90,1)
   #print robot.toString()
 
   obstacleList = initializeObstacles()
@@ -196,12 +198,12 @@ def main():
           verticesBehindObstacles.append(v)
   print "vertices behind obstacles initialized"
   
-          
+    '''      
   print "calculating edges"
   pathList = d.genPaths(vertexList,obstacleList)
   print "edges calculated"
   
-  
+  '''
   # select m nearest neighbors for each vertex
   print "generating nearest neighbors"
   startVertex = Vertex(0,0)
@@ -239,7 +241,7 @@ def main():
       #  print "unreachable's nearest neighbor list: %s" % n.toString()
   print "dijkstras complete"
   '''
-  
+  '''
   # unreachable vertices
   uxList = []
   uyList = []
@@ -247,9 +249,9 @@ def main():
     uxList.append(v.x)
     uyList.append(v.y)
     
-  
-  # plots edges (takes a while)
   '''
+  # plots edges (takes a while)
+  
   for e in pathList:
     #print "v0x (%s), v0y (%s), v1x (%s), v1y (%s)" % (e.vertex0.x, e.vertex0.y, e.vertex1.x, e.vertex1.y)
     x0 = e.vertex0.x
@@ -257,7 +259,7 @@ def main():
     x1 = e.vertex1.x
     y1 = e.vertex1.y
     plt.plot([x0,x1],[y0,y1],color = 'k')
-    '''
+    
   
   print "plotting coordinates"
   direct = plt.plot(xList,yList,'go')
@@ -275,6 +277,7 @@ def main():
 
   
   plt.show()
-  print "plotting complete"    
+  print "plotting complete"  
+  
   
 main()

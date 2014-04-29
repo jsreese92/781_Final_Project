@@ -1,6 +1,4 @@
 '''
-Created on Mar 4, 2014
-
 @author: jsreese
 '''
 from __future__ import division
