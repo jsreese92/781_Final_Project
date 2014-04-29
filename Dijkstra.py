@@ -39,4 +39,49 @@ class Dijkstra:
     #  print "v0: %s, v1: %s" % (e.vertex0.toString(), e.vertex1.toString())
     #print "edges printed"
     return edgeList
+  
+  def algorithm(self,pathList,startVertex,goalVertex):
+    curVertex = startVertex
+    curVertex.distance = 0
+    
+    self.algorithmHelper(pathList,curVertex,goalVertex)
+
+  def algorithmHelper(self,pathList,curVertex,goalVertex):
+    #print "curVertex: %s" % curVertex.toString()
+    for e in curVertex.nNL:
+      #print "curVertex: ", curVertex.toString()
+      destVertex = e.vertex1
+      #print "destVertex: ", destVertex.toString()
+      if (destVertex.visited == False):
+        if ((e.length + curVertex.distance) < (destVertex.distance)):
+          destVertex.distance = (e.length + curVertex.distance)
+          #print "updated distance of : %s" % destVertex.toString()
+          destVertex.previousVertex = curVertex
+          #print "destVertex[",destVertex.toString(),"].previousVertex=[",curVertex.toString(),"]"
+    # once all vertices in nNL are visited for current node, mark it as visited
+    curVertex.visited = True
+    #unvisitedVertices.remove(curVertex)
+    #print "vertex removed: " ,curVertex.toString()
+    
+    # if destination node has been marked visited, we're done
+    if(curVertex.equals(goalVertex)):
+      print "done"
+      return curVertex
+  
+    # now select unvisited node with smallest tentative distance
+    smallestDistance = 1024 # infinity for our purposes
+    smallestVertex = curVertex # just a placeholder
+
+    for e in pathList:
+      if (e.vertex0.visited == False):
+        if (e.vertex0.distance < smallestDistance):
+          smallestDistance = e.vertex0.distance
+          smallestVertex = e.vertex0
+    
+    #print "about to call help on: ", smallestVertex.toString()
+    if (smallestDistance < 1024):
+      self.algorithmHelper(pathList,smallestVertex,goalVertex)
+    else:
+      return curVertex
+      
 

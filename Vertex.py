@@ -23,7 +23,7 @@ class Vertex:
     self.x = theX
     self.y = theY
     
-  def distance(self,otherVertex):
+  def getDistance(self,otherVertex):
     """ returns distance between this node and another node"""
     return sqrt((otherVertex.x - self.x)**2 + (otherVertex.y - self.y)**2)
   
@@ -50,8 +50,7 @@ class Vertex:
     
   def toString(self):
     """Returns the string containing all an object's parameters"""
-    return 'x: %s, y: %s.' % \
-      (self.x, self.y)
+    return 'x: %s, y: %s, distance: %s.' % (self.x, self.y, self.distance)
     
   def equals(self,otherVertex):
     """Returns true if given vertex has same x and y as other vertex"""
